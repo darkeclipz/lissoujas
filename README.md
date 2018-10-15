@@ -1,7 +1,7 @@
 # lissoujas
 [Lissoujas curves](https://darkeclipz.github.io/lissoujas/)
 
-![lissoujas](lissoujas.png)
+![lissoujas](lissoujas-screenshot.png)
 
 ## Credit
 
