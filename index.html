@@ -170,6 +170,7 @@
             for(let i=0; i < columns*rows; i++) {
                 curves[i].add();
                 curves[i].draw();
+                point(curves[i].current);
             }
 
             theta += speed;
