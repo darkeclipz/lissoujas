@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Lissoujas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {margin:0;padding:0;overflow:hidden;}
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <script>
+
+        // Used to neatly store X and Y coordinates.
+        class Vector2 {
+            constructor(x, y = x) {
+                this.x = x;
+                this.y = y;
+            }
+        }
+
+        // Used to store and draw a curve.
+        class Curve {
+            constructor() {
+                this.points = [];
+                this.current = new Vector2(0);
+            }
+
+            setX(x) {
+                this.current.x = x;
+            }
+
+            setY(y) {
+                this.current.y = y;
+            }
+
+            add() {
+                this.points.push(new Vector2(this.current.x, this.current.y));
+            }
+
+            draw() {
+
+                if(this.points.length < 2) {
+                    return;
+                }
+
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                let movedTo = false;
+
+                for(let p of this.points) {
+
+                    if(!movedTo)  {
+                        ctx.moveTo(p.x, p.y);
+                        movedTo = true;
+                        continue;
+                    }
+
+                    ctx.lineTo(p.x, p.y);
+                }
+
+                ctx.stroke();
+            }
+            
+            clear() {
+                this.points = [];
+            }
+
+            static index(x, y, w) {
+                return w*y+x;
+            }
+        }
+
+    </script>
+    <script>
+    
+        let canvas = document.getElementById('canvas');
+        let ctx = canvas.getContext('2d');
+
+        // Canvas dimensions.
+        let width = window.innerWidth;
+        let height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+
+        // Canvas drawing styles.
+        ctx.fillStyle = 'black';
+        ctx.strokeStyle = 'white';
+
+        // Used for maths.
+        let size = 80;                         // Width and length of a curve.
+        let rows = Math.floor(height / size);   // Number of rows based on size.
+        let columns = Math.floor(width / size); // Number of columns based on size.
+
+        let w = h = size;           // Used for the width and height, but it is a square...
+        let r = w/2 * 0.8;          // Radius of the circle.
+
+        let theta = 0;              // Rotation angle.
+        let speed = 0.015;          // Speed in which the rotation angle increases.
+
+        let curves = new Array(rows*columns);
+        for(let i=0; i<rows*columns; i++) {
+            curves[i] = new Curve();
+        }
+        
+        // Clear the entire screen.
+        let clear = function() {  
+            ctx.fillStyle = 'black';
+            ctx.fillRect(0, 0, width, height);
+        }
+
+        // Draw a circle at vector v with radius r.
+        let circle = function(v, r) {
+            ctx.strokeStyle = 'white';
+            ctx.beginPath();
+            ctx.arc(v.x, v.y, r, 0, 2*Math.PI);
+            ctx.stroke();
+        }
+
+        // Draw a point at vector v.
+        let point = function(v) {
+            ctx.fillStyle = 'white';
+            ctx.beginPath();
+            ctx.arc(v.x, v.y, 3, 0, 2*Math.PI);
+            ctx.fill();
+        }
+
+        // Draw a line between two vectors.
+        let line = function(v, u) {
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = 'grey';
+            ctx.beginPath();
+            ctx.moveTo(v.x, v.y);
+            ctx.lineTo(u.x, u.y);
+            ctx.stroke();
+        }
+
+        // Main drawing loop.
+        let draw = function() {
+
+            requestAnimationFrame(draw);
+            clear();
+            
+            for(let i=1; i < columns; i++) {
+                let C = new Vector2(i*w + w/2, w/2);
+                let P = new Vector2(r*Math.cos(i*theta) + C.x, r*Math.sin(i*theta) + C.y);
+                line(new Vector2(P.x, 0), new Vector2(P.x, height));
+                circle(C, r);
+                point(P);
+
+                for(let j=0; j < rows; j++){
+                    curves[Curve.index(i-1, j, columns)].setX(P.x);
+                }
+            }
+
+            for(let i=1; i < rows; i++) {
+                let C = new Vector2(w/2, i*h + w/2);
+                let P = new Vector2(r*Math.cos(i*theta) + C.x, r*Math.sin(i*theta) + C.y);
+                line(new Vector2(0, P.y), new Vector2(width, P.y));
+                circle(C, r);
+                point(P);
+                for(let j=0; j < columns; j++){
+                    curves[Curve.index(j, i-1, columns)].setY(P.y);
+                }
+                
+            }
+
+            for(let i=0; i < columns*rows; i++) {
+                curves[i].add();
+                curves[i].draw();
+            }
+
+            theta += speed;
+
+            if(theta >= 2*Math.PI) {
+                theta = 0;
+                for(let i=0; i < columns*rows; i++) {
+                    curves[i].clear();
+                }
+            }
+        }
+        
+        // Let's go.
+        draw();
+
+    </script>
+</body>
+</html>
