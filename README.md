@@ -10,6 +10,8 @@ A Lissoujas curve can be created with a parametric sine function that does not h
 
 [Lissoujas curves (static - stops after a cycle)](https://darkeclipz.github.io/lissoujas/index_static.html)
 
+## Screenshots
+
 ![lissoujas](lissoujas-screenshot.png)
 
 ![lissoujas](lissoujas.png)
