@@ -1,6 +1,6 @@
 # lissoujas
 
-A Lissoujas curve can be created with a parametric sine function that that not equal periods. Example f(t) = <3*cos(t), 5*sin(t)>.
+A Lissoujas curve can be created with a parametric sine function that does not have equal periods. Example f(t) = <3*cos(t), 5*sin(t)>.
 
 [Lissoujas curves](https://darkeclipz.github.io/lissoujas/)
 
