@@ -90,7 +90,7 @@
         ctx.strokeStyle = 'white';
 
         // Used for maths.
-        let size = 200;                         // Width and length of a curve.
+        let size = 80;                         // Width and length of a curve.
         let rows = Math.floor(height / size);   // Number of rows based on size.
         let columns = Math.floor(width / size); // Number of columns based on size.
 
@@ -174,7 +174,7 @@
             for(let i=0; i < columns*rows; i++) {
 
                 // Calculate a color gradient (rgb values).
-                let offset = i/50+0.5;
+                let offset = i/200+0.5;
                 let r = 0.5*Math.cos(offset) + 0.5;
                 let g = 0.5*Math.cos(2*offset) + 0.5;
                 let b = 0.5*Math.cos(4*offset) + 0.5;
