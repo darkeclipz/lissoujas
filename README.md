@@ -1,5 +1,6 @@
 # lissoujas
 [Lissoujas curves](https://darkeclipz.github.io/lissoujas/)
+[Lissoujas curves (static - stops after a cycle](/index_static.html)
 
 ![lissoujas](lissoujas-screenshot.png)
 
