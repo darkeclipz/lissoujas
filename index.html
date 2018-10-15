@@ -143,33 +143,43 @@
             requestAnimationFrame(draw);
             clear();
             
+            // Draw all the columns.
             for(let i=1; i < columns; i++) {
+
+                // Calculate and draw circles.
                 let C = new Vector2(i*w + w/2, w/2);
                 let P = new Vector2(r*Math.cos(i*theta) + C.x, r*Math.sin(i*theta) + C.y);
                 line(new Vector2(P.x, 0), new Vector2(P.x, height));
                 circle(C, r);
                 point(P);
 
+                // Set the x-values of the curves.
                 for(let j=0; j < rows; j++){
                     curves[Curve.index(i-1, j, columns)].setX(P.x);
                 }
             }
 
+            // Draw all the rows
             for(let i=1; i < rows; i++) {
+
+                // Calculate and draw circles.
                 let C = new Vector2(w/2, i*h + w/2);
                 let P = new Vector2(r*Math.cos(i*theta) + C.x, r*Math.sin(i*theta) + C.y);
                 line(new Vector2(0, P.y), new Vector2(width, P.y));
                 circle(C, r);
                 point(P);
+
+                // Set the y-values of the curves.
                 for(let j=0; j < columns; j++){
                     curves[Curve.index(j, i-1, columns)].setY(P.y);
                 }
                 
             }
 
+            // Draw all the curves.
             for(let i=0; i < columns*rows; i++) {
 
-                // Color gradient.
+                // Calculate a color gradient (rgb values).
                 let offset = i/200+0.5;
                 let r = 0.5*Math.cos(offset) + 0.5;
                 let g = 0.5*Math.cos(2*offset) + 0.5;
@@ -177,6 +187,7 @@
                 r *= 255; g *= 255; b *= 255;
                 ctx.strokeStyle = 'rgb(' + r + ', ' + g + ', ' + b + ')';
 
+                // Draw curve.
                 curves[i].add();
                 curves[i].draw();
                 point(curves[i].current);
@@ -184,6 +195,7 @@
 
             theta += speed;
 
+            // Reset if we had a full cycle.
             if(theta >= 2*Math.PI) {
                 theta = 0;
                 for(let i=0; i < columns*rows; i++) {
