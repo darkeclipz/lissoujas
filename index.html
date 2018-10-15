@@ -168,6 +168,15 @@
             }
 
             for(let i=0; i < columns*rows; i++) {
+
+                // Color gradient.
+                let offset = i/200+0.5;
+                let r = 0.5*Math.cos(offset) + 0.5;
+                let g = 0.5*Math.cos(2*offset) + 0.5;
+                let b = 0.5*Math.cos(4*offset) + 0.5;
+                r *= 255; g *= 255; b *= 255;
+                ctx.strokeStyle = 'rgb(' + r + ', ' + g + ', ' + b + ')';
+
                 curves[i].add();
                 curves[i].draw();
                 point(curves[i].current);
